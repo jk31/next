@@ -1,5 +1,11 @@
-function HomePage() {
-  return <div>Welcome to Next.js on Heroku!</div>
+import Layout from "../components/Layout"
+
+function Index() {
+  return (
+    <Layout>
+      <p>This is the Home page.</p>
+    </Layout>
+  )
 }
 
-export default HomePage
+export default Index;
