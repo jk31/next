@@ -18,7 +18,15 @@ function Tasks({ tasks }) {
 }
 
 export async function getStaticProps() {
-    const res = await fetch("http://127.0.0.1:8000/app/tasks/tasks/")
+
+    const res = await fetch("http://127.0.0.1:8000/app/tasks/tasks/", {
+                            method: 'get',
+                            body: null,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': "Token 0a0a7776fcd8c7bd1458d42a739261cbadc0e0f6"
+                            }
+    })
     const tasks = await res.json()
 
     return {
