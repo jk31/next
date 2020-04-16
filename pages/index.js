@@ -1,3 +1,5 @@
+import { setGlobal } from 'reactn';
+
 import Layout from "../components/Layout"
 
 function Index() {
@@ -7,5 +9,9 @@ function Index() {
     </Layout>
   )
 }
+
+// setGlobal({
+//   test: "OKI"
+// });
 
 export default Index;
