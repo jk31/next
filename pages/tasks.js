@@ -1,47 +1,49 @@
 import fetch from "node-fetch";
+import useSWR from 'swr'
+import Cookies from "js-cookie";
+
 import Layout from "../components/Layout";
 
-import cookies from 'next-cookies'
 
+function TaskList () {
+    const { data, error } = useSWR("http://127.0.0.1:8000/app/tasks/tasks/", fetcher)
 
-function Tasks({ tasks }) {
-    return (
-        <Layout>
-            <h1>Tasks</h1>
-            <ul>
-                {tasks.map(task => (
+    if (error) return <div>failed to load</div>
+    if (!data) return <div>loading...</div>
+    if (data["detail"] === "Invalid token.") return <div>Invalid token</div>
+    return <div>
+                <ul>
+                {data.map(task => (
                     <li key={task.id}>
                         {task.title} <br />
                         {task.description}
                     </li>
                 ))}
-            </ul>
+                </ul>
+            </div>
+}
+
+function Tasks() {
+
+    return (
+        <Layout>
+            <h1>Tasks</h1>
+            <TaskList />
         </Layout>
     )
 }
 
-export async function getServerSideProps(ctx) {
-
-    let tasks = {};
-
-    const req = await fetch("http://127.0.0.1:8000/app/tasks/tasks/", {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                "Authorization": `Token ${cookies(ctx).tokenjk}`
-                            },
-                            body: null,
-        })
-        .then(resp => resp.json())
-        .then(resp => {tasks = resp})
-        .catch(error => console.log("ERROR:", error))
-
-    return {
-        props: {
-            tasks,
-        },
-    }
-}
+const fetcher = url => fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "Authorization": `Token ${Cookies.get("tokenjk")}`
+                        },
+                        body: null,
+    })
+    .then(resp => resp.json())
+    .catch(error => console.log("ERROR:", error))
 
 
 export default Tasks;
+

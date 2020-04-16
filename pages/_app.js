@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
 setGlobal({
     test: "test from _app",
     token: "",
-    isLogged: "not",
+    isLogged: false,
 });
 
-export default MyApp
+export default MyApp;

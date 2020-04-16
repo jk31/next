@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 import Layout from "../components/Layout";
 
-function Login() {
+export default function Login() {
 
     const [isLogged, setisLogged] = useGlobal("isLogged");
 
@@ -42,7 +42,7 @@ function Login() {
     );
 };
 
-export async function loginFetch(values) {
+async function loginFetch(values) {
 
     const req = await fetch("http://127.0.0.1:8000/user/token/login/", {
                             method: 'POST',
@@ -55,6 +55,3 @@ export async function loginFetch(values) {
         .then(resp => Cookies.set('tokenjk', resp["auth_token"], { sameSite: "lax" }))
         .catch(error => console.log("ERROR:", error))
 }
-
-
-export default Login;
