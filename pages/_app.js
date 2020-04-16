@@ -6,7 +6,8 @@ function MyApp({ Component, pageProps }) {
 }
 
 setGlobal({
-    test: "test from _app"
+    test: "test from _app",
+    token: ""
 });
 
 export default MyApp
