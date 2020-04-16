@@ -1,5 +1,8 @@
-import Layout from "../components/Layout";
 import fetch from "node-fetch";
+import Layout from "../components/Layout";
+
+import cookies from 'next-cookies'
+
 
 function Tasks({ tasks }) {
     return (
@@ -17,17 +20,21 @@ function Tasks({ tasks }) {
     )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps(ctx) {
 
-    const res = await fetch("http://127.0.0.1:8000/app/tasks/tasks/", {
-                            method: 'get',
-                            body: null,
+    let tasks = {};
+
+    const req = await fetch("http://127.0.0.1:8000/app/tasks/tasks/", {
+                            method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'Authorization': "Token 0a0a7776fcd8c7bd1458d42a739261cbadc0e0f6"
-                            }
-    })
-    const tasks = await res.json()
+                                "Authorization": `Token ${cookies(ctx).tokenjk}`
+                            },
+                            body: null,
+        })
+        .then(resp => resp.json())
+        .then(resp => {tasks = resp})
+        .catch(error => console.log("ERROR:", error))
 
     return {
         props: {

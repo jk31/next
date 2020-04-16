@@ -1,9 +1,9 @@
 import { useGlobal } from 'reactn';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Cookies from "js-cookie";
 
 import Layout from "../components/Layout";
-import fetch from "node-fetch";
 
 function Login() {
 
@@ -23,8 +23,7 @@ function Login() {
                 })}
                 onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
-                        alert(JSON.stringify(values));
-                        LoginFetch(JSON.stringify(values));
+                        loginFetch(JSON.stringify(values));
                         setSubmitting(false);
                     }, 400);
                 }}
@@ -43,24 +42,19 @@ function Login() {
     );
 };
 
-export async function LoginFetch(loginData) {
+export async function loginFetch(values) {
 
     const req = await fetch("http://127.0.0.1:8000/user/token/login/", {
-                            method: 'post',
-                            body: loginData,
+                            method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json'
-                            }
-    })
-    const res  = await req.json()
-    console.log("reponse from loginfetch: ", res)
-    return res
+                                'Content-Type': 'application/json',
+                            },
+                            body: values,
+        })
+        .then(resp => resp.json())
+        .then(resp => Cookies.set('tokenjk', resp["auth_token"], { sameSite: "lax" }))
+        .catch(error => console.log("ERROR:", error))
 }
 
-export async function LoginTest(values) {
-    console.log("start login");
-    console.log(values);
-    return values
-}
 
 export default Login;

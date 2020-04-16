@@ -2,6 +2,7 @@ import { useGlobal } from 'reactn';
 import { useState } from 'react';
 import Layout from "../components/Layout"
 
+
 function Test() {
 
     const [test, setTest] = useGlobal("test");

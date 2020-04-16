@@ -2,7 +2,6 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import Layout from "../components/Layout";
-import fetch from "node-fetch";
 
 function Signup() {
     return (
